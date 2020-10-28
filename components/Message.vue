@@ -12,18 +12,7 @@
 
 <script>
 export default {
-  data() {
-    return {
-      message: {
-        text: "今日も良い天気ですね",
-        user: {
-          thumbnail:
-            "https://pbs.twimg.com/profile_images/1020302875229007872/nvfnS9YM_400x400.jpg",
-          name: "komura_c"
-        }
-      }
-    };
-  },
+  props: ["message"],
   computed: {
     displayName() {
       return "@" + this.message.user.name;

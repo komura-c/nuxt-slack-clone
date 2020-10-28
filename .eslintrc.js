@@ -16,3 +16,7 @@
 //     'nuxt/no-cjs-in-config': 'off'
 //   }
 // }
+export const parserOptions = {
+  sourceType: "module",
+  ecmaVersion: 2015
+};

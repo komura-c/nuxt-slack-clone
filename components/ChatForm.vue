@@ -1,14 +1,44 @@
 <template>
   <div class="input-container">
-    <textarea @click="login"></textarea>
+    <textarea v-model="text" v-on:keydown.enter="addMessage"></textarea>
   </div>
 </template>
 
 <script>
+import { db } from "~/plugins/firebase";
+
 export default {
+  data() {
+    return {
+      text: null
+    };
+  },
   methods: {
-    login() {
-      window.alert("書き込むには、ログインしてください！");
+    addMessage() {
+      if (this.keyDownedForJPConversion(event)) {
+        return;
+      }
+      const channelId = this.$route.params.id;
+      db.collection("channels")
+        .doc(channelId)
+        .collection("messages")
+        .add({
+          text: this.text,
+          createdAt: new Date().getTime(),
+          user: {
+            name: "komura_c",
+            thumbnail:
+              "https://pbs.twimg.com/profile_images/1020302875229007872/nvfnS9YM_400x400.jpg"
+          }
+        })
+        .then(docRef => {
+          docRef.set({ id: docRef.id }, { merge: true });
+          this.text = null;
+        });
+    },
+    keyDownedForJPConversion(event) {
+      const codeForConversion = 229;
+      return event.keyCode === codeForConversion;
     }
   }
 };
